@@ -15,6 +15,6 @@ Criado com base no módulo <a href="https://www.npmjs.org/package/express-genera
 
 
 Developer: Thiago Porto
-[Site](http://www.waib.com.br)
-[Blog](http://www.waib.com.br/blog)
-[Canal](http://www.youtube.com/waibtecnologia)
+- [Site](http://www.waib.com.br)
+- [Blog](http://www.waib.com.br/blog)
+- [Canal](http://www.youtube.com/waibtecnologia)
