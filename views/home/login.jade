@@ -1,0 +1,20 @@
+extends ../layout
+
+block content
+	form(method="POST", action="/", class="form-login")
+		h3 Entrar no Sistema
+		p Preencha os campos necessários para acessar
+
+		if messages.erro
+			br
+			div(class="alert alert-danger")
+				each msg in messages.erro
+					b= msg
+					br
+		div(class="form-group")
+			label E-mail
+			input(type="email", class="form-control", placeholder="e-mail", name="email", autofocus, required)
+		div(class="form-group")
+			label Senha
+			input(type="password", class="form-control", placeholder="password", name="password", required)
+		button(type="submit", class="btn btn-primary btn-block") Entrar

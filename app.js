@@ -1,38 +1,57 @@
-var express      = require('express');
-var path         = require('path');
-var favicon      = require('static-favicon');
-var logger       = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser   = require('body-parser');
-var session      = require('express-session');
+var express      = require('express'),
+    path         = require('path'),
+    favicon      = require('serve-favicon'),
+    logger       = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser   = require('body-parser'),
+    load         = require('express-load'),
+    session      = require('express-session'),
+    mongoose     = require('mongoose'),
+    flash        = require('express-flash'),
+    validator    = require('express-validator'),
+    moment       = require('moment');
 
-var routes = require('./routes/index');
-var users  = require('./routes/users');
+// conexão com mongo db
+mongoose.connect('mongodb://localhost/acadtec', function (err){
+  if(err) {
+    console.log('Erro ao conectar com mongodb: ' + err);
+  } else {
+    console.log('Conexão efetuada com sucesso!')
+  }
+});
 
 var app = express();
-
-//middleware
-var erros = require('./middleware/erros');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(favicon());
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
+app.use(validator());
 app.use(cookieParser());
-app.use(session({ secret: 'sua-chave-secreta' }));
+app.use(session({ secret: 'acadeteccurso' }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash());
 
-app.use('/', routes);
-app.use('/users', users);
+// helpers
+app.use(function(req, res, next) {
+  res.locals.session  = req.session.usuario;
+  res.locals.isLogged = !!req.session.usuario;
+  res.locals.moment   = moment;
+  next();
+});
 
-//middleware
-app.use(erros.notfound);
-app.use(erros.serverError);
+load('models').then('controllers').then('routes').into(app);
 
-app.listen(3000, function() {
-    console.log('Express server listening on port 3000');
+// //middlewares
+// app.use(errors.notfound);
+// app.use(errors.serverError);
+
+const port = '3000';
+
+app.listen(port, function() {
+  console.log('Application running on port ' + port);
 });

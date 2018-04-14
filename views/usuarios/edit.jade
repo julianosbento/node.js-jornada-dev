@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+	h1 Atualizar usuário
+	hr
+	br
+	if messages.erro
+		div(class="alert alert-danger")
+			each msg in messages.erro
+				b= msg
+				br
+		br
+	form(method="POST", action="/usuarios/edit/#{data._id}", role="form")
+		div(class="form-group")
+			label Nome
+			input(type="text", class="form-control", name="nome", placeholder="Nome", value="#{data.nome}", autofocus, required)
+		div(class="form-group")
+			label E-mail
+			input(type="email", class="form-control", name="email", placeholder="e-mail", value="#{data.email}", disabled)
+		div(class="form-group")
+			label Site
+			input(type="text", class="form-control", name="site", placeholder="Site", value="#{data.site}")
+		button(type="submit", class="btn btn-success") Salvar
+	br
+	br
+	a(href="/usuarios" class="btn btn-primary") Voltar

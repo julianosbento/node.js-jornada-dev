@@ -1,0 +1,39 @@
+extends ../layout
+
+block content
+	h1 Usuários
+	a(href="/usuarios/create", class="btn btn-success") Cadastrar
+	br
+	br
+	if messages.erro
+		div(class="alert alert-danger")
+			p #{messages.erro}
+		br
+	if messages.info
+		div(class="alert alert-success")
+			p #{messages.info}
+		br
+	if lista.length > 0
+		table(class="table table-striped")
+			thead
+				tr
+					th ID:
+					th Nome:
+					th E-mail:
+					th Data:
+					th Ações:
+			tbody
+				each valor in lista
+					tr
+						td #{valor._id}
+						td #{valor.nome}
+						td #{valor.email}
+						td #{moment(valor.data_cad).format('DD/MM/YYYY HH:MM:ss')}
+						td
+							a(href="/usuarios/show/#{valor._id}", class="btn btn-info")
+								span(class="glyphicon glyphicon-search") Visualizar
+							span &nbsp;
+							a(href="/usuarios/edit/#{valor._id}", class="btn btn-primary")
+								span(class="glyphicon glyphicon-pencil") Editar
+	else
+		p Nenhum registro encontrado!
